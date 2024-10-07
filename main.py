@@ -43,8 +43,8 @@ def get_products_links(item_name):
         driver.get(url=current_url)
         time.sleep(2)
 
-        # page_down(driver=driver)
-        # time.sleep(2)
+        page_down(driver=driver)
+        time.sleep(2)
 
         try:
             find_links = driver.find_elements(By.CLASS_NAME, 'tile-hover-target')
