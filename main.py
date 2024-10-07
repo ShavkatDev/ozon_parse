@@ -27,7 +27,7 @@ def get_products_links(item_name):
     time.sleep(2)
     
     page=1
-    for i in range(70):
+    for i in range(1):
         current_url = driver.current_url
         parsed_url = urlparse(current_url)
         query_params = parse_qs(parsed_url.query)
@@ -40,8 +40,8 @@ def get_products_links(item_name):
         driver.get(url=current_url)
         time.sleep(2)
 
-        page_down(driver=driver)
-        time.sleep(2)
+        # page_down(driver=driver)
+        # time.sleep(2)
 
         try:
             find_links = driver.find_elements(By.CLASS_NAME, 'tile-hover-target')
@@ -80,10 +80,12 @@ def get_products_links(item_name):
         "product_ozon_card_price",
         "product_discount_price",
         "product_base_price",
+        "product_image",
+        "product_category",
+        "product_link",
         "product_statistic",
         "product_stars",
         "product_reviews",
-        "product_image"
     ]
 
     with open(csv_filename, mode='w', newline='', encoding='utf-8') as file:

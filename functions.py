@@ -65,6 +65,22 @@ def collect_product_info(driver, url=''):
         product_image = product_video_div.find('img')['src']
     except:
         product_image = None
+        
+    #product category
+    product_category_all = None
+    try:
+        product_category_div = soup.find('ol', class_='ie8_10 tsBodyControl400Small')
+        product_category = product_category_div.find_all('li')
+
+        product_category_all = ''
+        for li in product_category:
+            if product_category[-1].text == li.text:
+                product_category_all += f'{li.text}'
+            else:
+                product_category_all += f'{li.text} -> '
+
+    except:
+        print(f'[!] Не получилось собрать категорию! [!]\n{page_source}')
 
     # product statistic
     product_stars = None
@@ -121,10 +137,12 @@ def collect_product_info(driver, url=''):
             'product_ozon_card_price': product_ozon_card_price,
             'product_discount_price': product_discount_price,
             'product_base_price': product_base_price,
+            'product_image': product_image,
+            'product_category': product_category_all,
+            'product_link': driver.current_url,
             'product_statistic': product_statistic,
             'product_stars': product_stars,
             'product_reviews': product_reviews,
-            'product_image': product_image,
         }
     )
 
