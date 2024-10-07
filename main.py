@@ -27,6 +27,8 @@ def get_products_links(item_name):
     time.sleep(2)
     
     page=1
+    
+    products_urls_dict = {}
     for i in range(70):
         current_url = driver.current_url
         parsed_url = urlparse(current_url)
@@ -54,15 +56,13 @@ def get_products_links(item_name):
         except:
             print('[!] Что-то сломалось при сборе ссылок на товары!')
 
-        products_urls_dict = {}
-
-        for k, v in enumerate(products_urls):
+        for k, v in enumerate(products_urls, start=len(products_urls_dict)):
             products_urls_dict.update({k: v})
 
-        with open('products_urls_dict.json', 'w', encoding='utf-8') as file:
-            json.dump(products_urls_dict, file, indent=4, ensure_ascii=False)
-
         time.sleep(2)
+
+    with open('products_urls_dict.json', 'w', encoding='utf-8') as file:
+        json.dump(products_urls_dict, file, indent=4, ensure_ascii=False)
 
     products_data = []
 
@@ -101,10 +101,8 @@ def get_products_links(item_name):
 
     print(f"Данные успешно сохранены в {csv_filename}")
 
-
     driver.close()
     driver.quit()
-
 
 def main():
     print('[INFO] Сбор данных начался. Пожалуйста ожидайте...')
