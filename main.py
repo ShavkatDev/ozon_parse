@@ -53,41 +53,41 @@ def get_products_links(item_name):
 
         time.sleep(2)
 
-        products_data = []
+    products_data = []
 
-        for url in products_urls:
-            data = collect_product_info(driver=driver, url=url)
-            print(f'[+] Собрал данные товара с id: {data.get("product_id")}')
-            time.sleep(2)
-            products_data.append(data)
+    for url in products_urls:
+        data = collect_product_info(driver=driver, url=url)
+        print(f'[+] Собрал данные товара с id: {data.get("product_id")}')
+        time.sleep(2)
+        products_data.append(data)
 
-        # with open('PRODUCTS_DATA.json', 'w', encoding='utf-8') as file:
-        #     json.dump(products_data, file, indent=4, ensure_ascii=False)
+    # with open('PRODUCTS_DATA.json', 'w', encoding='utf-8') as file:
+    #     json.dump(products_data, file, indent=4, ensure_ascii=False)
 
-        csv_filename = f'PRODUCTS_DATA_{page}.csv'
+    csv_filename = f'PRODUCTS_DATA_{page}.csv'
 
-        fieldnames = [
-            "product_id",
-            "product_name",
-            "product_ozon_card_price",
-            "product_discount_price",
-            "product_base_price",
-            "product_statistic",
-            "product_stars",
-            "product_reviews",
-            "product_image"
-        ]
+    fieldnames = [
+        "product_id",
+        "product_name",
+        "product_ozon_card_price",
+        "product_discount_price",
+        "product_base_price",
+        "product_statistic",
+        "product_stars",
+        "product_reviews",
+        "product_image"
+    ]
 
-        with open(csv_filename, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            
-            writer.writeheader()
-            
-            for product in products_data:
-                writer.writerow(product)
+    with open(csv_filename, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        
+        writer.writeheader()
+        
+        for product in products_data:
+            writer.writerow(product)
 
-        print(f"Данные успешно сохранены в {csv_filename}")
-    
+    print(f"Данные успешно сохранены в {csv_filename}")
+
     page+=2
 
     driver.close()
