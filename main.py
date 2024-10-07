@@ -27,7 +27,7 @@ def get_products_links(item_name):
     time.sleep(2)
     
     page=1
-    for i in range(150):
+    for i in range(1):
         current_url = driver.current_url
         parsed_url = urlparse(current_url)
         query_params = parse_qs(parsed_url.query)
