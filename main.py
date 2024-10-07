@@ -3,6 +3,7 @@ import json
 import time
 import undetected_chromedriver as uc 
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC 
@@ -25,10 +26,17 @@ def get_products_links(item_name):
     find_input.send_keys(Keys.ENTER)
     time.sleep(2)
     
-    page=3
+    page=1
     for i in range(150):
+        current_url = driver.current_url
+        parsed_url = urlparse(current_url)
+        query_params = parse_qs(parsed_url.query)
+        query_params['page'] = page
+        updated_query = urlencode(query_params, doseq=True)
+        current_url = urlunparse(parsed_url._replace(query=updated_query))
+        
+        page+=2
 
-        current_url = f'{driver.current_url}&page={page}'
         driver.get(url=current_url)
         time.sleep(2)
 
@@ -88,7 +96,6 @@ def get_products_links(item_name):
 
     print(f"Данные успешно сохранены в {csv_filename}")
 
-    page+=2
 
     driver.close()
     driver.quit()
