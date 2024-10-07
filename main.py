@@ -27,7 +27,7 @@ def get_products_links(item_name):
     time.sleep(2)
     
     page=1
-    for i in range(1):
+    for i in range(70):
         current_url = driver.current_url
         parsed_url = urlparse(current_url)
         query_params = parse_qs(parsed_url.query)
@@ -35,7 +35,10 @@ def get_products_links(item_name):
         updated_query = urlencode(query_params, doseq=True)
         current_url = urlunparse(parsed_url._replace(query=updated_query))
         
-        page+=3
+        if page == 207 or page == 208:
+            page = 210
+        else:
+            page += 3
 
         driver.get(url=current_url)
         time.sleep(2)
