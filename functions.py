@@ -1,6 +1,7 @@
 import time as tm
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
+import re
 
 
 def page_down(driver):
@@ -34,8 +35,6 @@ def collect_product_info(driver, url=''):
         By.XPATH, '//div[contains(text(), "Артикул: ")]'
     ).text.split('Артикул: ')[1]
 
-    # print(product_id)
-
     page_source = str(driver.page_source)
     soup = BeautifulSoup(page_source, 'lxml')
 
@@ -52,7 +51,25 @@ def collect_product_info(driver, url=''):
     # except:
     #     product_id = None
 
+    try:
+        pattern = r'/product/.*?-(\d+)/'
+        artikuls = re.search(pattern, page_source).group(1)
+    except:
+        print(f'[!] Не получилось собрать артикул! [!]\n{page_source}')
+
+    # product image
+    try:
+        product_video_div = soup.find('div', class_='kp4_27 k4p_27')
+        if not product_video_div:
+            product_video_div = soup.find('div', class_='p2k_27 pk3_27')
+        product_image = product_video_div.find('img')['src']
+    except:
+        product_image = None
+
     # product statistic
+    product_stars = None
+    product_reviews = None
+    product_statistic = None
     try:
         product_statistic = soup.find(
             'div', attrs={"data-widget": 'webSingleProductScore'}).text.strip()
@@ -99,7 +116,7 @@ def collect_product_info(driver, url=''):
 
     product_data = (
         {
-            'product_id': product_id,
+            'product_id': artikuls,
             'product_name': product_name,
             'product_ozon_card_price': product_ozon_card_price,
             'product_discount_price': product_discount_price,
@@ -107,6 +124,7 @@ def collect_product_info(driver, url=''):
             'product_statistic': product_statistic,
             'product_stars': product_stars,
             'product_reviews': product_reviews,
+            'product_image': product_image,
         }
     )
 
