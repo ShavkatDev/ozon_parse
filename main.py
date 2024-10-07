@@ -35,7 +35,7 @@ def get_products_links(item_name):
         updated_query = urlencode(query_params, doseq=True)
         current_url = urlunparse(parsed_url._replace(query=updated_query))
         
-        page+=2
+        page+=3
 
         driver.get(url=current_url)
         time.sleep(2)
