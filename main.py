@@ -1,3 +1,4 @@
+import os
 import csv
 import json
 import time
@@ -16,12 +17,12 @@ def get_products_links(item_name):
     driver.implicitly_wait(5)
 
     driver.get(url=f'https://uz.ozon.com/')
-    time.sleep(2)
+    time.sleep(4)
 
     find_input = driver.find_element(By.NAME, 'text')
     find_input.clear()
     find_input.send_keys(item_name)
-    time.sleep(2)
+    time.sleep(3)
 
     find_input.send_keys(Keys.ENTER)
     time.sleep(2)
@@ -29,7 +30,7 @@ def get_products_links(item_name):
     page=1
     
     products_urls_dict = {}
-    for i in range(70):
+    for i in range(1):
         current_url = driver.current_url
         parsed_url = urlparse(current_url)
         query_params = parse_qs(parsed_url.query)
@@ -64,11 +65,17 @@ def get_products_links(item_name):
     with open('products_urls_dict.json', 'w', encoding='utf-8') as file:
         json.dump(products_urls_dict, file, indent=4, ensure_ascii=False)
 
+    time.sleep(2)
+
+    with open('products_urls_dict.json', 'r', encoding='utf-8') as file:
+        data_json = json.load(file)
+
     products_data = []
 
-    for url in products_urls:
+    for number, url in data_json.items():
+        print(url)
         data = collect_product_info(driver=driver, url=url)
-        print(f'[+] Собрал данные товара с id: {data.get("product_id")}')
+        print(f'[{int(number)+1}] Собрал данные товара с id: {data.get("product_id")}')
         time.sleep(2)
         products_data.append(data)
 
@@ -112,4 +119,7 @@ def main():
     print('[INFO] Работа выполнена успешно!')
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('[#] Скрипт остановлен! [#]')

@@ -1,5 +1,7 @@
-page = 3
-link_lenght = len(f'&page={page}')
-current_url = f'https://uz.ozon.com/search/?brand=74301437&from_global=true&text=IKEA&page=3'
+import json
 
-print()
+with open('products_urls_dict.json', 'r', encoding='utf-8') as file:
+    data_json = json.load(file)
+
+for number, url in data_json.items():
+    print(url)
