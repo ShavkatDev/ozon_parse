@@ -34,6 +34,7 @@ def collect_product_info(driver, url=''):
     page_source = str(driver.page_source)
     soup = BeautifulSoup(page_source, 'lxml')
 
+    product_id = 0
     try:
         product_id = driver.find_element(
         By.XPATH, '//div[contains(text(), "Артикул: ")]'
@@ -44,6 +45,7 @@ def collect_product_info(driver, url=''):
     with open(f'product_{product_id}.html', 'w', encoding='utf-8') as file:
         file.write(page_source)
 
+    product_name = '0'
     try:
         product_name = soup.find('div', attrs={"data-widget": 'webProductHeading'}).find(
         'h1').text.strip().replace('\t', '').replace('\n', ' ')
@@ -58,6 +60,7 @@ def collect_product_info(driver, url=''):
     # except:
     #     product_id = None
 
+    artikuls = '0'
     try:
         pattern = r'/product/.*?-(\d+)/'
         artikuls = re.search(pattern, page_source).group(1)
