@@ -2,15 +2,11 @@ import os
 import csv
 import json
 import time
-import undetected_chromedriver as uc 
-from bs4 import BeautifulSoup
+import undetected_chromedriver as uc
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC 
-from selenium.webdriver.support.ui import WebDriverWait
 from functions import page_down, collect_product_info
-
 
 def get_products_links(item_name):
     driver = uc.Chrome()
@@ -21,6 +17,7 @@ def get_products_links(item_name):
 
     find_input = driver.find_element(By.NAME, 'text')
     find_input.clear()
+    time.sleep(1)
     find_input.send_keys(item_name)
     time.sleep(3)
 
