@@ -31,9 +31,12 @@ def collect_product_info(driver, url=''):
     tm.sleep(3)
 
     # product_id
-    product_id = driver.find_element(
+    try:
+        product_id = driver.find_element(
         By.XPATH, '//div[contains(text(), "Артикул: ")]'
-    ).text.split('Артикул: ')[1]
+        ).text.split('Артикул: ')[1]
+    except:
+        print(f'[!] Не получилось собрать артикул! [!]\n{page_source}')
 
     page_source = str(driver.page_source)
     soup = BeautifulSoup(page_source, 'lxml')
@@ -41,8 +44,12 @@ def collect_product_info(driver, url=''):
     with open(f'product_{product_id}.html', 'w', encoding='utf-8') as file:
         file.write(page_source)
 
-    product_name = soup.find('div', attrs={"data-widget": 'webProductHeading'}).find(
+    try:
+        product_name = soup.find('div', attrs={"data-widget": 'webProductHeading'}).find(
         'h1').text.strip().replace('\t', '').replace('\n', ' ')
+    except:
+        print(f'[!] Не получилось собрать название! [!]\n{page_source}')
+
 
     # product_id
     # try:
